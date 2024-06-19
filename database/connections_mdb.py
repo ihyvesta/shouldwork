@@ -9,10 +9,18 @@ logger.setLevel(logging.ERROR)
 myclient = pymongo.MongoClient(DATABASE_URI)
 mydb = myclient[DATABASE_NAME]
 mycol = mydb['CONNECTION']  
+print("Connected to primary MongoDB database.")
+except Exception as e:
+    logger.error(f"Failed to connect to primary MongoDB: {e}")
 
 myclient2 = pymongo.MongoClient(SECONDDB_URI)
 mydb2 = myclient2[DATABASE_NAME]
 mycol2 = mydb2['CONNECTION']
+print("Connected to secondary MongoDB database.")
+    else:
+        logger.warning("SECONDDB_URI is not provided.")
+except Exception as e:
+    logger.error(f"Failed to connect to secondary MongoDB: {e}")
 
 async def add_connection(group_id, user_id):
     query = mycol.find_one(
